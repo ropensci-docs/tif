@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "7a335fc5d620b41aa830abc7255f57674d8fa230",
+    "author": "Taylor Arnold <taylor@dvlab.io>",
+    "time": "2023-11-26 21:57:13",
+    "files": 1,
+    "merge": false,
+    "message": "Update DESCRIPTION"
+  },
+  "repo": "https://github.com/ropenscilabs/tif",
+  "pkg": "tif"
+}
