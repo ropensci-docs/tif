@@ -1,0 +1,50 @@
+# Validate Document Term Matrix Object
+
+A valid document term matrix is a sparse matrix with the row
+representing documents and columns representing terms. The row names is
+a character vector giving the document ids with no duplicated entries.
+The column names is a character vector giving the terms of the matrix
+with no duplicated entries. The spare matrix should inherit from the
+Matrix class dgCMatrix.
+
+## Usage
+
+``` r
+tif_is_dtm(dtm, warn = FALSE)
+```
+
+## Arguments
+
+- dtm:
+
+  a document term matrix object to test the validity of
+
+- warn:
+
+  logical. Should the function produce a verbose warning for the
+  condition for which the validation fails. Useful for testing.
+
+## Value
+
+a logical vector of length one indicating whether the input is a valid
+document term matrix
+
+## Details
+
+The tests are run sequentially and the function returns, with a warning
+if the warn flag is set, on the first test that fails. We use this
+implementation because some tests may fail entirely or be meaningless if
+the prior ones are note passed. For example, if the dtm object is not a
+matrix it may not contain row or column names.
+
+## Examples
+
+``` r
+#' @importFrom Matrix Matrix
+dtm <- Matrix::Matrix(0, ncol = 26, nrow = 5, sparse = TRUE)
+colnames(dtm) <- LETTERS
+rownames(dtm) <- sprintf("doc%d", 1:5)
+
+tif_is_dtm(dtm)
+#> [1] TRUE
+```

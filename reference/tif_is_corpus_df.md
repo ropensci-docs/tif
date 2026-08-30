@@ -1,0 +1,57 @@
+# Validate Corpus Data Frame Object
+
+A valid data frame corpus object is an object that least two columns.
+One column must be called doc_id and be a character vector with UTF-8
+encoding. Document ids must be unique. There must also be a column
+called text and must also be a character vector in UTF-8 encoding. Each
+individual document is represented by a single row in the data frame.
+Addition document-level metadata columns and corpus level attributes are
+allowed but not required.
+
+## Usage
+
+``` r
+tif_is_corpus_df(corpus, warn = FALSE)
+```
+
+## Arguments
+
+- corpus:
+
+  a corpus object to test for validity
+
+- warn:
+
+  logical. Should the function produce a verbose warning for the
+  condition for which the validation fails. Useful for testing.
+
+## Value
+
+a logical vector of length one indicating whether the input is a valid
+corpus
+
+## Details
+
+The tests are run sequentially and the function returns, with a warning
+if the warn flag is set, on the first test that fails. We use this
+implementation because some tests may fail entirely or be meaningless if
+the prior ones are note passed. For example, if the corpus object does
+not have a variable named "text" it does not make sense to check whether
+this column is a character vector.
+
+## Examples
+
+``` r
+corpus <- data.frame(doc_id = c("doc1", "doc2", "doc3"),
+                     text = c("Aujourd'hui, maman est morte.",
+                      "It was a pleasure to burn.",
+                      "All this happened, more or less."),
+                     stringsAsFactors = FALSE)
+
+tif_is_corpus_df(corpus)
+#> [1] TRUE
+
+corpus$author <- c("Camus", "Bradbury", "Vonnegut")
+tif_is_corpus_df(corpus)
+#> [1] TRUE
+```
