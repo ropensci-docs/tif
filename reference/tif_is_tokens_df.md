@@ -1,0 +1,64 @@
+# Validate Tokens Data Frame Object
+
+A valid tokens data frame object is a data frame or an object that
+inherits a data frame. It has no row names and has at least two columns.
+It must a contain column called doc_id that is a character vector with
+UTF-8 encoding. Document ids must be unique. It must also contain a
+column called token that must also be a character vector in UTF-8
+encoding. Each individual token is represented by a single row in the
+data frame. Addition token-level metadata columns are allowed but not
+required.
+
+## Usage
+
+``` r
+tif_is_tokens_df(tokens, warn = FALSE)
+```
+
+## Arguments
+
+- tokens:
+
+  a tokens object to test for validity
+
+- warn:
+
+  logical. Should the function produce a verbose warning for the
+  condition for which the validation fails. Useful for testing.
+
+## Value
+
+a logical vector of length one indicating whether the input is a valid
+tokens object
+
+## Details
+
+The tests are run sequentially and the function returns, with a warning
+if the warn flag is set, on the first test that fails. We use this
+implementation because some tests may fail entirely or be meaningless if
+the prior ones are note passed. For example, if the tokens object does
+not have a variable named "doc_id" it does not make sense to check
+whether this column is a character vector.
+
+## Examples
+
+``` r
+tokens <- data.frame(doc_id = c("doc1", "doc1", "doc1", "doc1",
+                                "doc2",  "doc2", "doc2", "doc2",
+                                "doc2", "doc2", "doc3", "doc3",
+                                "doc3", "doc3", "doc3", "doc3"),
+                     token = c("aujourd'hui", "maman", "est",
+                               "morte", "it", "was", "a", "pleasure",
+                               "to", "burn", "all", "this", "happened",
+                               "more", "or", "less"),
+                     stringsAsFactors = FALSE)
+
+tif_is_tokens_df(tokens)
+#> [1] TRUE
+
+tokens$pos <- "NOUN"
+tokens$NER <- ""
+tokens$sentiment <- runif(16L)
+tif_is_tokens_df(tokens)
+#> [1] TRUE
+```
